@@ -38,20 +38,38 @@
 <link rel="stylesheet" href="../../css/style.css">
 
 </head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var placeholder = document.getElementById("post-image");
+
+    // 检查 `localStorage` 里是否已经有 `video`
+    var storedVideo = localStorage.getItem("bgVideo");
+    if (storedVideo) {
+      // 如果已经加载过，复用 `video`
+      placeholder.innerHTML = storedVideo;
+    } else {
+      // 如果是第一次加载，创建 `video`
+      var videoHTML = `
+        <video id="bg-video" autoplay loop muted playsinline>
+          <source src="/videos/bg.mp4" type="video/mp4">
+          您的浏览器不支持 HTML5 视频。
+        </video>`;
+      placeholder.innerHTML = videoHTML;
+
+      // 存储 `video` 到 `localStorage`
+      localStorage.setItem("bgVideo", videoHTML);
+    }
+  });
+</script>
+
 <body>
   <div class="root-container">
     
 <!-- header container -->
 <header class="header-container">
   
-    <div class="post-image">
-      <video autoplay muted loop preload="auto">
-        <source src="/videos/bg.mp4" type="video/mp4">
-      </video>
-      <div class="fallback-image">
-        <img src="/videos/bg.jpg" alt="fallback image">
-      </div>
-    </div>
+    <div id="post-image"></div> <!-- 占位符，JS 会在这里插入视频 -->
   
   
 
