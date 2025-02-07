@@ -39,37 +39,20 @@
 
 </head>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var placeholder = document.getElementById("post-image");
-
-    // 检查 `localStorage` 里是否已经有 `video`
-    var storedVideo = localStorage.getItem("bgVideo");
-    if (storedVideo) {
-      // 如果已经加载过，复用 `video`
-      placeholder.innerHTML = storedVideo;
-    } else {
-      // 如果是第一次加载，创建 `video`
-      var videoHTML = `
-        <video id="bg-video" autoplay loop muted playsinline>
-          <source src="/videos/bg.mp4" type="video/mp4">
-          您的浏览器不支持 HTML5 视频。
-        </video>`;
-      placeholder.innerHTML = videoHTML;
-
-      // 存储 `video` 到 `localStorage`
-      localStorage.setItem("bgVideo", videoHTML);
-    }
-  });
-</script>
-
 <body>
   <div class="root-container">
     
 <!-- header container -->
 <header class="header-container">
   
-    <div id="post-image"></div> <!-- 占位符，JS 会在这里插入视频 -->
+    <div class="post-image">
+      <video autoplay muted loop preload="auto">
+        <source src="/videos/bg.mp4" type="video/mp4">
+      </video>
+      <div class="fallback-image">
+        <img src="/videos/bg.jpg" alt="fallback image">
+      </div>
+    </div>
   
   
 
@@ -295,6 +278,22 @@
 
 
   
+  <script>
+    // 页面加载时，从 localStorage 中获取内容
+    document.addEventListener('DOMContentLoaded', () => {
+      const postImage = document.getElementById('post-image');
+      const savedContent = localStorage.getItem('postImageContent');
+      if (savedContent) {
+        postImage.innerHTML = savedContent; // 恢复内容
+      }
+    });
+  
+    // 页面离开时，将内容保存到 localStorage
+    window.addEventListener('beforeunload', () => {
+      const postImage = document.getElementById('post-image');
+      localStorage.setItem('postImageContent', postImage.innerHTML); // 保存内容
+    });
+  </script>
   <!-- 尾部用户自定义相关内容 -->
 </body>
 </html>
